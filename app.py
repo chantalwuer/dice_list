@@ -7,10 +7,16 @@ import math
 '''
 # Where to start with your to dos?
 
-Assign weights to your tasks and decide randomly which one to do next.
+So many things to do but you just don't know where to start?
+Every task seems equally important and you waste time trying to come up with a good order.
+Why not let the dice decide? 🎲
 '''
 
 ## * Input tasks
+st.markdown("""
+    ### 📋 Enter your tasks
+    """)
+
 list_with_weights_percent = {}
 
 with st.form(key='submit_tasks'):
@@ -22,6 +28,10 @@ todolist = [x.strip() for x in task_list.split(',')]
 
 
 ## * Assign weights in percent
+st.markdown("""
+    ### ⚖️ Assign importance of tasks
+    """)
+
 for task in todolist:
     if sum(list_with_weights_percent.values()) < 100:
         list_with_weights_percent[task] = st.slider(f'How important is {task} today?',
@@ -32,7 +42,10 @@ for task in todolist:
 
 
 ## * Pick a task percent
-st.write("Now let's pick your task!")
+st.markdown("""
+    ### 🎲 Choose how to pick your task
+    """)
+
 st.write("How to you want to pick your task?")
 
 if st.checkbox('Roll my own die'):
@@ -45,12 +58,9 @@ if st.checkbox('Roll my own die'):
         tasks_weights_percent = []
         for key, value in list_with_weights_percent.items():
             tasks_weights_percent += [key] * math.ceil((value / 100) * die_numbers)
-            print(key, value, tasks_weights_percent)
 
         if len(tasks_weights_percent) > die_numbers:
             tasks_weights_percent = tasks_weights_percent[:die_numbers]
-            print(tasks_weights_percent)
-            print(len(tasks_weights_percent))
 
         weighted_tasks = pd.DataFrame(numbers_dice, columns=["Number"])
         weighted_tasks['Task'] = tasks_weights_percent
